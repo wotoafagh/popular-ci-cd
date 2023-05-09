@@ -31,7 +31,7 @@ $OutputFolder = "./docs/modules/$($Module.ToLower())/commands"
 Import-Module "$tmpModuleFolder/$Module"
 New-MarkdownHelp -OutputFolder $OutputFolder -Module $Module -Force
 
-. $PSScriptRoot\Add-CustomYamMeta.ps1 -Path $OutputFolder `
+. $PSScriptRoot\Add-CustomYamlMeta.ps1 -Path $OutputFolder `
    -BaseEditUrlPath "https://github.com/MethodsAndPractices/$($Module.ToLower())/edit/trunk/.docs"
 
 . $PSScriptRoot\Create-DocusaurusMenuFile.ps1 -MarkdownPath $OutputFolder -NavigationPath "modules/vsteam/commands"

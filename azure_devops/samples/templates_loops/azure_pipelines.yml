@@ -1,0 +1,22 @@
+# Taken from: https://stackoverflow.com/a/61857223
+
+pool:
+  name: Hosted VS2017
+  demands:
+  - npm
+  - msbuild
+  - visualstudio
+  - vstest
+
+steps:
+- template: azure_webapp_template.yml
+  parameters:
+    web_apps:
+    - name: Customer 1
+      url: customer1.azurewebsites.net
+    - name: Customer 2
+      url: customer2.azurewebsites.net
+    - name: Customer 3
+      url: customer3.azurewebsites.net
+    - name: Customer 4
+      url: customer4.azurewebsites.net

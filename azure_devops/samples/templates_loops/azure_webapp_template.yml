@@ -1,0 +1,27 @@
+# Proving ability to loop over params a number of times
+
+parameters:
+- name: 'web_apps'
+  type: object
+  default: {}
+
+steps:
+- ${{ each webapp in parameters.web_apps }}:
+
+  - task: PowerShell@2
+    displayName: 'Task Group Test 1 ${{webapp.name}}'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Name: ${{webapp.name}} with url ${{webapp.url}}"
+      failOnStderr: true
+      workingDirectory: '$(Build.SourcesDirectory)'
+
+  - task: PowerShell@2
+    displayName: 'Task Group Test 2 ${{webapp.name}}'
+    inputs:
+      targetType: 'inline'
+      script: |
+        Write-Host "Name: ${{webapp.name}} with url ${{webapp.url}}"
+      failOnStderr: true
+      workingDirectory: '$(Build.SourcesDirectory)'

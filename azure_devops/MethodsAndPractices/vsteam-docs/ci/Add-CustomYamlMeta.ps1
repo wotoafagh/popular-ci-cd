@@ -16,7 +16,7 @@ foreach ($file in $files) {
 
     $stringContent = $fileContent | Out-String
 
-    #get the snyopsis for the description
+    #get the synopsis for the description
     [regex] $regex = '(?s)(\#\# *SYNOPSIS)(.*?)(\#\# *SYNTAX)'
 
     $synopsis = $null
@@ -42,7 +42,7 @@ keywords:
 ---
 "@
 
-    $formatedContent = $stringContent -replace $regex, $yamlMeta
+    $formattedContent = $stringContent -replace $regex, $yamlMeta
 
-    $formatedContent | Set-Content -Path $file.FullName -Encoding UTF8
+    $formattedContent | Set-Content -Path $file.FullName -Encoding UTF8
 }
