@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Check .NET Core version
+        run: dotnet --version
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Publish Backend
+        run: buildtools/publish-backend
+
+      - name: Test Backend
+        run: buildtools/test-backend
+
+      - name: Build Extension
+        run: buildtools/build-vsix
+
+      - name: Archive artifacts
+        if: github.ref == 'refs/heads/master'
+        uses: actions/upload-artifact@v3
+        with:
+          name: Artifacts
+          path: artifacts/*
+
+      - name: Create draft release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          gh release create "${GITHUB_REF#refs/tags/}" --draft --title "${GITHUB_REF#refs/tags/v}" artifacts/*.vsix
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
